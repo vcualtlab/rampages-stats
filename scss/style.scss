@@ -1,0 +1,24 @@
+@import "../vendor/susy/sass/susy";
+@import "../vendor/breakpoint-sass/stylesheets/breakpoint";
+
+$susy: (
+  columns: 12,
+  gutters: (2/3),
+  math: fluid,
+  output: float,
+  gutter-position: after,
+  grid-padding: 2em,
+  debug: (
+    image: hide,
+    color: rgba(#66f, .25),
+    output: background,
+    toggle: overlay,
+  ),
+);
+
+$wrapper-width: 1600px;
+
+
+body{
+  background-color: red;
+}
