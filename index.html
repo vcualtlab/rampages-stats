@@ -7,36 +7,145 @@
   <title>The HTML5 Herald</title>
   <meta name="description" content="The HTML5 Herald">
   <meta name="author" content="SitePoint">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <link rel="stylesheet" href="css/style.css?v=1.0">
+  <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
 
   <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
 </head>
 
-<body ng-app="App" ng-controller="MainController">
+<body ng-app="App" ng-controller="MainController" class="container">
 
-<input type="text" name="url" ng-model="url" required><br/>
-<button ng-click="makeBlob( url, 1, 50, [])">Load Posts</button><br/>
+<div class="page-header">
+  <h1>Stats Rampage! <small>:{{view}}</small></h1>
+</div>
+
+
+
+
+
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#" ng-click="switchTo('list')">List</a></li>
+        <li><a href="#" ng-click="switchTo('timeline')">Timeline</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Stat Sheets <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#" ng-click="switchTo('list')">List</a></li>
+            <li><a href="#" ng-click="switchTo('timeline')">Timeline</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+      
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+
+<!-- http://rampages.us/grandma-socy -->
+<!-- <input type="text" name="url" ng-model="url"><br/> -->
+{{url = 'http://rampages.us/grandma-socy'}}
+<button ng-click="makeBlob( url, 1, 30, [])">Load Posts</button><br/>
 
 {{ loading }}
 
-<!-- <div dir-paginate='post in posts | itemsPerPage: 20'>
-	{{post.title}}
-</div> -->
 
-<!-- <dir-pagination-controls boundary-links='true' on-page-change='pageChangeHandler(newPageNumber)' template-url='vendor/angular-utils-pagination/dirPagination.tpl.html'></dir-pagination-controls> -->
+<div ng-switch="view">
+	
+	<div ng-switch-when="list" 
+	     class="list" >
+		
+		<input type="text" placeholder="search" ng-model="listSearch.$">
+
+		<p>{{ (posts|filter:listSearch).length }} Posts</p>
+
+		<div class="timeline">
+			
+			<div ng-repeat="post in posts | filter:listSearch">
+				<div class="point {{ activePointCalled(post.ID) }}" 
+					 id="point{{post.ID}}" 
+					 style="left:{{ pointInTime( getEpoch( post.date_gmt ), max, min ) }}%">
+				</div>
+			</div>
+				
+		</div>
+		<h3> active point is: {{active_point_in_time}}</h3>
+		<div class="list-group">
+			
+			<a ng-repeat='post in posts | filter:listSearch'
+			   href="#open{{post.ID}}"
+			   class="list-group-item"
+			   data-toggle="collapse"
+			   data-point="point{{post.ID}}"
+			   ng-mouseenter="callToPoint( post.ID )"
+			   ng-mouseleave="clearPoint( post.ID )">
+				<h5>{{post.title}} <small>by: {{post.author.username}}</small> <span ng-click="togglePoint( post.ID )">check</span></h5>
+
+				<div class="collapse" id="open{{post.ID}}">
+					<div ng-bind-html="post.content">
+						{{post.content}}
+					</div>
+				</div>
+			</a>
+
+		</div>
+
+	</div>
+	
+
+	<div ng-switch-when="timeline">
+		<p>Posts over time</p>
+		<div class="timeline">
+			
+			<div ng-repeat="post in posts">
+				<div class="point" style="left:{{ pointInTime( getEpoch( post.date_gmt ), max, min ) }}%">
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</div>
+
+
+
+
+
+  <script src="vendor/jquery/dist/jquery.min.js"></script>
+  <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 
   <script src="vendor/angular/angular.min.js"></script>
-  <script src="vendor/jquery/dist/jquery.min.js"></script>
-  <!-- <script src="vendor/angular-utils-pagination/dirPagination.js"></script> -->
-
+  <script src="vendor/angular-sanitize/angular-sanitize.min.js"></script>
+  <script src="vendor/angular-utils-pagination/dirPagination.js"></script>
+  <script src="vendor/angular-filter/dist/angular-filter.min.js"></script>
   <script src="js/app.js"></script>
+
 
   <script src="//localhost:35729/livereload.js"></script>
   <script type='text/javascript' id="__bs_script__">//<![CDATA[
     document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.2.8.2.js'><\/script>".replace("HOST", location.hostname));
 //]]></script>
+
 </body>
 </html>

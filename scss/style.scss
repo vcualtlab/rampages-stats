@@ -16,9 +16,38 @@ $susy: (
   ),
 );
 
-$wrapper-width: 1600px;
+$wrapper-width: 1200px;
 
 
-body{
-  background-color: red;
+
+.timeline{
+  
+  background: whitesmoke;
+  width: 100%;
+  position: relative;
+
+  height: 32px;
+
+
+  .point{
+    top: 8px;
+    margin-bottom: 3px;
+    position: relative;
+    line-height: 15px;
+    display: inline-block;
+    height: 14px;
+    width: 0px;
+    border-left: 1px solid black;
+    position: absolute;
+    background-color: rgba( 155,155,155,.5 );
+    transition: all .3s ease;
+  
+    &.active-point{
+      top: 0;
+      height: 32px;
+      border-left: 1px solid red;
+      z-index: 1;
+    }
+
+  }
 }
