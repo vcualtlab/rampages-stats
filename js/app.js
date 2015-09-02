@@ -81,6 +81,22 @@ angular.module('MainCtrl', []).controller('MainController', function($scope, $ht
     	}
     };
 
+    $scope.zoom_timeline = 100;
+
+    $scope.minus = function( value, increment ){
+        value = value - increment;
+
+        value = ( value <= 100 ? 100 : value );
+
+        return value;
+    };
+
+    $scope.plus = function( value, increment ){
+        value = value + increment;
+
+        return value;
+    };
+
     // $scope.togglePoint
 
 

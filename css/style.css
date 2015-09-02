@@ -2,7 +2,14 @@
   background: whitesmoke;
   width: 100%;
   position: relative;
-  height: 32px; }
+  height: 32px;
+  overflow: scroll; }
+  .timeline .container {
+    background: transparent;
+    width: 100%;
+    position: relative;
+    height: 32px;
+    transition: all 0.3s linear; }
   .timeline .point {
     top: 8px;
     margin-bottom: 3px;
